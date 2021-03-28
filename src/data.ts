@@ -1,3 +1,7 @@
+/**
+ * The frame for viewport.
+ */
+export const extent = [24.7866, 57.1161, 24.8025, 57.126] as [number, number, number, number]
 
 export const castleCoords = [
     [24.79607349472046, 57.11766009080054],
@@ -53,6 +57,12 @@ export const campCoords = [
     [24.792811928558354, 57.11785813526623],  // 20
     [24.79489332275391, 57.118254221021004],  // 21
     [24.7981334312439, 57.117764938002495],  // 22
+]
+
+export const allCoords = [
+    ...castleCoords,
+    ...chickenCoords,
+    ...campCoords,
 ]
 
 export const captureTime = {

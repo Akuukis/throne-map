@@ -19,15 +19,14 @@ import View from 'ol/View'
 
 import throneMap2020 from '../static/throne7.png'
 import { perimeterLine, zones } from './zones'
-import { captureTime } from './data'
+import { captureTime, extent } from './data'
 
 //                   kreisi  apaksa  labi    augsa
-const throne7Extent = [24.7866, 57.1161, 24.8025, 57.126] as Extent
 // console.log(getCenter(throne7Extent))
 
 const opacity = 0.6
 
-var style = new Style({
+const style = new Style({
     stroke: new Stroke({
       color: 'rgba(0, 0, 0, 0.6)',
       width: 5,
@@ -122,13 +121,13 @@ export const styleFunction = (feature: FeatureLike) => {
 (async () => {
     const imageLayer = new ImageLayer({
         source: new ImageStatic({
-            imageExtent: throne7Extent,
+            imageExtent: extent,
             projection: 'EPSG:4326',
             url: throneMap2020,
         }),
     })
     imageLayer.setOpacity(opacity/2);
-    var source = new VectorSource({wrapX: false});
+    const source = new VectorSource({wrapX: false});
 
     const layers = [
         new TileLayer({
@@ -175,7 +174,7 @@ export const styleFunction = (feature: FeatureLike) => {
         layers,
         target: 'map',
         view: new View({
-            center: transform(getCenter(throne7Extent), 'EPSG:4326', 'EPSG:3857'),
+            center: transform(getCenter(extent), 'EPSG:4326', 'EPSG:3857'),
             // extent: coe.extent,
             // projection: coe.projection,
             zoom: 16.4,
@@ -183,7 +182,7 @@ export const styleFunction = (feature: FeatureLike) => {
     })
 
     map.on('click', function(event) {
-        var text = JSON.stringify(transform(event.coordinate, 'EPSG:3857', 'EPSG:4326')
+        const text = JSON.stringify(transform(event.coordinate, 'EPSG:3857', 'EPSG:4326')
             .map((coord) => Number(coord.toFixed(4))))
         alert(text);
     });
