@@ -91,9 +91,8 @@ module.exports = {
 
     devServer: {
         contentBase: join(ROOT_DIR, 'dist'),
-        https: true,
+        https: false,  // Annoying security notice.
         host: '0.0.0.0',
-        historyApiFallback: true,  // for SPA to fallback to index.
     },
 
 }

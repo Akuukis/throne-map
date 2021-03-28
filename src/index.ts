@@ -4,7 +4,7 @@ import 'ol/ol.css'
 import FillPattern from 'ol-ext/style/FillPattern'
 import { defaults as defaultControls, ScaleLine } from 'ol/control'
 import MousePosition from 'ol/control/MousePosition'
-import { getCenter } from 'ol/extent'
+import { Extent, getCenter } from 'ol/extent'
 import Feature, { FeatureLike } from 'ol/Feature'
 import { Vector as VectorLayer } from 'ol/layer'
 import BaseLayer from 'ol/layer/Base'
@@ -21,7 +21,7 @@ import throneMap2020 from '../static/throne7.png'
 import { camps, captureTime, perimeterLine, zones } from './vendor'
 
 //                   kreisi  apaksa  labi    augsa
-const throne7Extent = [24.7866, 57.1161, 24.8025, 57.126]
+const throne7Extent = [24.7866, 57.1161, 24.8025, 57.126] as Extent
 // console.log(getCenter(throne7Extent))
 
 var style = new Style({
