@@ -161,7 +161,7 @@ export const styleFunction = (feature: FeatureLike) => {
                     crossOrigin: 'anonymous',
                     src: variantIcons[d.variant] || variantIcons.default,
                     imgSize: [512, 512],
-                    scale: 1/10,
+                    scale: 1/15,
                 }),
             }))
             return feature
