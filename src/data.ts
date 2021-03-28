@@ -3,15 +3,54 @@
  */
 export const extent = [24.7866, 57.1161, 24.8025, 57.126] as [number, number, number, number]
 
-export const castleCoords = [
-    [24.79607349472046, 57.11766009080054],
-    [24.790408669281007, 57.119279364483475],
-    [24.79105239944458, 57.122552644002496],
-    [24.79755407409668, 57.12128297205581],
-    [24.7945, 57.1194]
-]
+export enum TYPE {
+    CASTLE = 'castle',
+    CAMP = 'camp',
+    MARKET = 'market',
+}
 
-export const perimeterCoords = [
+export enum CASTLE_VARIANT {
+    BLUE = 'blue',
+    YELLOW = 'yellow',
+    RED = 'red',
+    GREEN = 'green',
+}
+
+export enum CAMP_VARIANT {
+    IRON = 'iron',
+    COAL = 'coal',
+    FOOD = 'food',
+    CHICKEN = 'chicken',
+}
+
+export type POI =
+    | POI.Market
+    | POI.Castle
+    | POI.Camp
+
+export namespace POI {
+    interface Base {
+        id: number,
+        type: TYPE
+        point: [number, number]
+    }
+
+    export interface Market extends Base {
+        type: TYPE.MARKET
+    }
+
+    export interface Castle extends Base {
+        type: TYPE.CASTLE
+        variant: CASTLE_VARIANT
+    }
+
+    export interface Camp extends Base {
+        type: TYPE.CAMP
+        variant: CAMP_VARIANT
+    }
+}
+
+export const PERIMETER = [
     [24.796223698425297, 57.12385721570766],
     [24.795966206359864, 57.124835614328106],
     [24.792618809509282, 57.124474541656355],
@@ -27,42 +66,38 @@ export const perimeterCoords = [
     [24.796223698425297, 57.12385721570766],  // repeated
 ]
 
-export const chickenCoords = [
-    [24.7901,57.1207],
-    [24.7936,57.1214],
-    [24.7973,57.1191],
-    [24.7923,57.1184],
-]
-
-export const campCoords = [
-    [24.79909902648926, 57.11848721066298],  // 01
-    [24.799270687866212, 57.11946575115559],  // 02
-    [24.795773087310792, 57.119430803726004],  // 03
-    [24.796309529113774, 57.120362723897074],  // 04
-    [24.79463583068848, 57.120409319290104],  // 05
-    [24.796288071441655, 57.12272736609256],  // 07
-    [24.794721661376954, 57.123554372800584],  // 08
-    [24.79542976455689, 57.12146934864532],  // 08
-    [24.79291921691895, 57.124194999105384],  // 09
-    [24.793305455017094, 57.12318163966896],  // 10
-    [24.79339128570557, 57.12219154907089],  // 11
-    [24.792232571411137, 57.12115483760647],  // 12
-    [24.789550362396245, 57.12116648621108],  // 13
-    [24.792211113739018, 57.120024905544426],  // 14
-    [24.793155251312257, 57.1188599910418],  // 15
-    [24.79139572219849, 57.11869690008771],  // 16
-    [24.791009484100346, 57.11792803306011],  // 17
-    [24.79214674072266, 57.117031001356395],  // 18
-    [24.794013558197026, 57.116984401713296],  // 19
-    [24.792811928558354, 57.11785813526623],  // 20
-    [24.79489332275391, 57.118254221021004],  // 21
-    [24.7981334312439, 57.117764938002495],  // 22
-]
-
-export const allCoords = [
-    ...castleCoords,
-    ...chickenCoords,
-    ...campCoords,
+export const DATA: POI[] = [
+    {id: 0 , type: TYPE.MARKET,                                 point: [24.7945, 57.1194] },
+    {id: 90, type: TYPE.CASTLE, variant: CASTLE_VARIANT.BLUE  , point: [24.79607349472046, 57.11766009080054] },
+    {id: 91, type: TYPE.CASTLE, variant: CASTLE_VARIANT.YELLOW, point: [24.790408669281007, 57.119279364483475] },
+    {id: 92, type: TYPE.CASTLE, variant: CASTLE_VARIANT.GREEN , point: [24.79105239944458, 57.122552644002496] },
+    {id: 93, type: TYPE.CASTLE, variant: CASTLE_VARIANT.RED   , point: [24.79755407409668, 57.12128297205581] },
+    {id: 80, type: TYPE.CAMP  , variant: CAMP_VARIANT.CHICKEN , point: [24.7901,57.1207], },
+    {id: 81, type: TYPE.CAMP  , variant: CAMP_VARIANT.CHICKEN , point: [24.7936,57.1214], },
+    {id: 82, type: TYPE.CAMP  , variant: CAMP_VARIANT.CHICKEN , point: [24.7973,57.1191], },
+    {id: 83, type: TYPE.CAMP  , variant: CAMP_VARIANT.CHICKEN , point: [24.7923,57.1184], },
+    {id:  1, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79909902648926, 57.11848721066298] },
+    {id:  2, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.799270687866212, 57.11946575115559] },
+    {id:  3, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.795773087310792, 57.119430803726004] },
+    {id:  4, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.796309529113774, 57.120362723897074] },
+    {id:  5, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79463583068848, 57.120409319290104] },
+    {id:  7, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.796288071441655, 57.12272736609256] },
+    {id:  8, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.794721661376954, 57.123554372800584] },
+    {id:  8, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79542976455689, 57.12146934864532] },
+    {id:  9, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79291921691895, 57.124194999105384] },
+    {id: 10, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.793305455017094, 57.12318163966896] },
+    {id: 11, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79339128570557, 57.12219154907089] },
+    {id: 12, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.792232571411137, 57.12115483760647] },
+    {id: 13, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.789550362396245, 57.12116648621108] },
+    {id: 14, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.792211113739018, 57.120024905544426] },
+    {id: 15, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.793155251312257, 57.1188599910418] },
+    {id: 16, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79139572219849, 57.11869690008771] },
+    {id: 17, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.791009484100346, 57.11792803306011] },
+    {id: 18, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79214674072266, 57.117031001356395] },
+    {id: 19, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.794013558197026, 57.116984401713296] },
+    {id: 20, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.792811928558354, 57.11785813526623] },
+    {id: 21, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.79489332275391, 57.118254221021004] },
+    {id: 22, type: TYPE.CAMP  , variant: CAMP_VARIANT.COAL    , point: [24.7981334312439, 57.117764938002495] },
 ]
 
 export const captureTime = {
