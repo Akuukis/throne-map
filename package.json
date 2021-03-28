@@ -1,0 +1,51 @@
+{
+    "name": "coe-lyon-gladal",
+    "version": "0.0.1",
+    "description": "",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "author": "Akuukis",
+    "license": "GPL-3.0",
+    "scripts": {
+        "start": "yarn run watch",
+        "build": "tsc -v && tsc -b tsconfig.json",
+        "clean": "rm -rf coverage lib tmp tsconfig.tsbuildinfo",
+        "deploy": "yarn run package && aws --profile CoE s3 --region eu-west-1 sync dist s3://coe-maps-dev --acl public-read",
+        "lint": "tslint -p tsconfig.json",
+        "lint:fix": "tslint -p tsconfig.json --fix",
+        "lint:summary": "yarn lint:verbose | grep ERROR | sed -r 's/ERROR: \\((.*)\\)\\s\\/.*/\\1/' | sort | uniq -c | sort -nr",
+        "lint:verbose": "tslint -p tsconfig.json -t verbose",
+        "package": "webpack --mode production",
+        "serve": "serve dist/ -p 8080",
+        "watch": "webpack serve --mode development --open --hot"
+    },
+    "dependencies": {
+        "@turf/intersect": "^6.1.3",
+        "geojson": "^0.5.0",
+        "ol": "^6.1.0",
+        "ol-ext": "^3.1.14",
+        "proj4": "^2.5.0"
+    },
+    "devDependencies": {
+        "@turf/turf": "^5.1.6",
+        "@types/node-fetch": "^2.5.0",
+        "@types/ol": "^5.3.6",
+        "@types/openlayers": "^4.6.17",
+        "@types/topojson": "^3.2.2",
+        "concurrently": "^6.0.0",
+        "css-loader": "^5.2.0",
+        "file-loader": "^6.2.0",
+        "fork-ts-checker-webpack-plugin": "^6.2.0",
+        "html-loader": "^2.1.2",
+        "html-webpack-plugin": "^5.3.1",
+        "path": "^0.12.7",
+        "serve": "^11.1.0",
+        "style-loader": "^2.0.0",
+        "ts-loader": "^8.1.0",
+        "typescript": "^4.2.3",
+        "webpack": "^5.28.0",
+        "webpack-bundle-analyzer": "^4.4.0",
+        "webpack-cli": "^4.6.0",
+        "webpack-dev-server": "^3.11.2"
+    }
+}

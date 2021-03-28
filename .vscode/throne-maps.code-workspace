@@ -1,0 +1,72 @@
+{
+	"extensions": {
+		"recommendations": [
+			"acarreiro.calculate",
+			"amoosbr.markdown-nomnoml",
+			"christian-kohler.npm-intellisense",
+			"christian-kohler.path-intellisense",
+			"eamodio.gitlens",
+			"eg2.vscode-npm-script",
+			"formulahendry.code-runner",
+			"jasonnutter.vscode-codeowners",
+			"joelday.docthis",
+			"kaiwood.indentation-level-movement",
+			"knisterpeter.vscode-commitizen",
+			"ms-vscode.typescript-javascript-grammar",
+			"ms-vscode.vscode-typescript-tslint-plugin",
+			"rbbit.typescript-hero",
+			"shardulm94.trailing-spaces",
+			"spywhere.guides",
+			"streetsidesoftware.code-spell-checker",
+			"tyriar.sort-lines",
+			"wmaurer.change-case",
+			"yzhang.markdown-all-in-one"
+		]
+	},
+	"folders": [
+		{
+			"path": "..",
+			"name": "Throne Maps"
+		}
+	],
+	"settings": {
+		"editor.wordWrapColumn": 180,
+		"editor.wordWrap": "wordWrapColumn",
+		"editor.rulers": [120, 180],
+		"editor.minimap.maxColumn": 180,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.tslint": true
+		},
+		"files.associations": {
+			".env.example": "shellscript",
+			"tslint.json": "jsonc"
+		},
+		"files.exclude": {
+			".git/": true,
+			"build/": true,
+			"*.tsbuildinfo": true,
+		},
+		"search.exclude": {
+			".nyc_output/": true,
+			"node_modules/": true,
+			"tmp/": true,
+			"yarn-error.log": true,
+		},
+		"breadcrumbs.enabled": true,
+		"search.showLineNumbers": true,
+		"typescript.disableAutomaticTypeAcquisition": true,
+		"typescript.reportStyleChecksAsWarnings": true,
+		"typescript.preferences.importModuleSpecifier": "relative",
+		"typescript.preferences.quoteStyle": "single",
+		"typescript.tsdk": "node_modules/typescript/lib",
+		"typescriptHero.imports.insertSemicolons": false,
+		"typescriptHero.imports.multiLineWrapThreshold": 120,
+		"typescriptHero.imports.organizeOnSave": true,
+		"typescriptHero.imports.grouping": [
+			"Plains",
+			"Modules",
+			"/@material-ui/",
+			"Workspace"
+		]
+	}
+}
