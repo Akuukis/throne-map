@@ -18,11 +18,14 @@ import { Circle, Fill, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 
 import throneMap2020 from '../static/throne7.png'
-import { camps, captureTime, perimeterLine, zones } from './vendor'
+import { perimeterLine, zones } from './zones'
+import { captureTime } from './data'
 
 //                   kreisi  apaksa  labi    augsa
 const throne7Extent = [24.7866, 57.1161, 24.8025, 57.126] as Extent
 // console.log(getCenter(throne7Extent))
+
+const opacity = 0.6
 
 var style = new Style({
     stroke: new Stroke({
@@ -40,10 +43,19 @@ var style = new Style({
     }),
   })
 
-export const styleFunction = (feature: FeatureLike, resolution: number) => {
+export const styleFunction = (feature: FeatureLike) => {
     const id = feature.getId();
     console.log(id)
     const myCaptureTime = captureTime[id]
+    if(!myCaptureTime) return [
+        new Style({
+            fill: new Fill({
+                color: `rgba(0, 0, 0, ${opacity/2})`,
+            }),
+            geometry: (feature: Feature) => feature.getGeometry(),
+        }),
+    ]
+
     const spacing = 10
     const scale = 1
     const fill = new Fill({color: 'rgba(255, 0, 0, 0)'})
@@ -52,14 +64,7 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
     const sizeWhite = spacing * myCaptureTime.white / (480 - myCaptureTime.grey)
     const sizeYellow = spacing * myCaptureTime.yellow / (480 - myCaptureTime.grey)
     console.log(sizeBlue, sizeGreen, sizeWhite, sizeYellow)
-    const opacity = 0.6
     const styles = [
-        new Style({
-            stroke: new Stroke({
-                color: 'rgba(0, 0, 0, 0.6)',
-                width: 2,
-            }),
-        }),
         new Style({
             fill: new FillPattern({
                 pattern: 'hatch',
@@ -71,7 +76,6 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
                 offset: (0) + sizeBlue / 2,
                 scale,
             }),
-            geometry: (feature: Feature) => feature.getGeometry(),
         }),
         new Style({
             fill: new FillPattern({
@@ -84,7 +88,6 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
                 offset: (sizeBlue) + sizeGreen / 2,
                 scale,
             }),
-            geometry: (feature: Feature) => feature.getGeometry(),
         }),
         new Style({
             fill: new FillPattern({
@@ -97,7 +100,6 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
                 offset: (sizeBlue + sizeGreen) + sizeWhite / 2,
                 scale,
             }),
-            geometry: (feature: Feature) => feature.getGeometry(),
         }),
         new Style({
             fill: new FillPattern({
@@ -110,7 +112,6 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
                 offset: (sizeBlue + sizeGreen + sizeWhite) + sizeYellow / 2,
                 scale,
             }),
-            geometry: (feature: Feature) => feature.getGeometry(),
         }),
     ]
 
@@ -126,7 +127,7 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
             url: throneMap2020,
         }),
     })
-    imageLayer.setOpacity(1);
+    imageLayer.setOpacity(opacity/2);
     var source = new VectorSource({wrapX: false});
 
     const layers = [
@@ -134,13 +135,13 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
             source: new OSM(),
         }),
         imageLayer,
-        new VectorLayer({
-            source: new VectorSource({features: camps}),
-            style,
-        }),
+        // new VectorLayer({
+        //     source: new VectorSource({features: zones}),
+        //     style: styleFunction,
+        // }),
         new VectorLayer({
             source: new VectorSource({features: zones}),
-            style: styleFunction,
+            style,
         }),
         new VectorLayer({
             source: new VectorSource({features: [perimeterLine]}),
@@ -165,7 +166,7 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
         undefinedHTML: '&nbsp;',
     })
 
-    new Map({
+    const map = new Map({
         controls: defaultControls().extend([
             new ScaleLine({
             }),
@@ -180,6 +181,12 @@ export const styleFunction = (feature: FeatureLike, resolution: number) => {
             zoom: 16.4,
         }),
     })
+
+    map.on('click', function(event) {
+        var text = JSON.stringify(transform(event.coordinate, 'EPSG:3857', 'EPSG:4326')
+            .map((coord) => Number(coord.toFixed(4))))
+        alert(text);
+    });
 
     console.info('Done!')
 })()
