@@ -37,7 +37,7 @@ module.exports = {
         rules: [
             { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
             { test: /\.html$/, use: 'html-loader' },
-            { test: /\.svg$/, use: 'svg-loader?name=img/[name].[ext]?[hash]' },
+            { test: /\.svg$/, use: 'file-loader?name=img/[name].[ext]?[hash]' },
             { test: /\.jpg$/, use: 'file-loader?name=img/[name].[ext]?[hash]' },
             { test: /\.png$/, use: 'file-loader?name=img/[name].[ext]?[hash]' },
             {

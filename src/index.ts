@@ -4,27 +4,50 @@ import 'ol/ol.css'
 import FillPattern from 'ol-ext/style/FillPattern'
 import { defaults as defaultControls, ScaleLine } from 'ol/control'
 import MousePosition from 'ol/control/MousePosition'
-import { Extent, getCenter } from 'ol/extent'
+import { getCenter } from 'ol/extent'
 import Feature, { FeatureLike } from 'ol/Feature'
+import Point from 'ol/geom/Point'
 import { Vector as VectorLayer } from 'ol/layer'
 import BaseLayer from 'ol/layer/Base'
 import ImageLayer from 'ol/layer/Image'
 import TileLayer from 'ol/layer/Tile'
 import Map from 'ol/Map'
-import { transform } from 'ol/proj'
+import { fromLonLat, transform } from 'ol/proj'
 import { OSM, Vector as VectorSource } from 'ol/source'
 import ImageStatic from 'ol/source/ImageStatic'
-import { Circle, Fill, Stroke, Style } from 'ol/style'
+import { Circle, Fill, Icon, Stroke, Style } from 'ol/style'
 import View from 'ol/View'
 
+import campChicken from '../static/camp_chicken.svg'
+import campCoal from '../static/camp_coal.svg'
+import campIron from '../static/camp_iron.svg'
+import campVegetables from '../static/camp_vegetables.svg'
+import market from '../static/market.svg'
+import teamBlueTent from '../static/team_blue_tent.svg'
+import teamGreenYurt from '../static/team_green_yurt.svg'
+import teamRedTipi from '../static/team_red_tipi.svg'
+import teamYellowHouse from '../static/team_yellow_house.svg'
 import throneMap2020 from '../static/throne7.png'
+import { CAMP_VARIANT, captureTime, CASTLE_VARIANT, DATA, extent } from './data'
 import { perimeterLine, zones } from './zones'
-import { captureTime, extent } from './data'
 
 //                   kreisi  apaksa  labi    augsa
 // console.log(getCenter(throne7Extent))
 
 const opacity = 0.6
+
+const variantIcons: Record<CAMP_VARIANT | CASTLE_VARIANT | 'default', string> = {
+    [CASTLE_VARIANT.BLUE]: teamBlueTent,
+    [CASTLE_VARIANT.YELLOW]: teamYellowHouse,
+    [CASTLE_VARIANT.RED]: teamRedTipi,
+    [CASTLE_VARIANT.GREEN]: teamGreenYurt,
+    [CAMP_VARIANT.IRON]: campIron,
+    [CAMP_VARIANT.COAL]: campCoal,
+    [CAMP_VARIANT.FOOD]: campVegetables,
+    [CAMP_VARIANT.CHICKEN]: campChicken,
+    default: market,
+}
+console.log(variantIcons)
 
 const style = new Style({
     stroke: new Stroke({
@@ -129,11 +152,27 @@ export const styleFunction = (feature: FeatureLike) => {
     imageLayer.setOpacity(opacity/2);
     const source = new VectorSource({wrapX: false});
 
+    const dataFeatures = DATA
+        .map((d) => {
+            const feature = new Feature(new Point(fromLonLat(d.point)))
+            feature.setId(d.id)
+            feature.setStyle(new Style({
+                image: new Icon({
+                    crossOrigin: 'anonymous',
+                    src: variantIcons[d.variant] || variantIcons.default,
+                    imgSize: [512, 512],
+                    scale: 1/10,
+                }),
+            }))
+            return feature
+        })
+    console.log(dataFeatures)
+
     const layers = [
         new TileLayer({
             source: new OSM(),
         }),
-        imageLayer,
+        // imageLayer,
         // new VectorLayer({
         //     source: new VectorSource({features: zones}),
         //     style: styleFunction,
@@ -153,6 +192,9 @@ export const styleFunction = (feature: FeatureLike) => {
         }),
         new VectorLayer({
             source: source,
+        }),
+        new VectorLayer({
+            source: new VectorSource({features: dataFeatures}),
         }),
     ] as BaseLayer[]
 
