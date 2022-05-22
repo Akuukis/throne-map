@@ -1,3 +1,5 @@
+> DEPRECATED. See repo `throne-analysis` instead.
+
 # Throne map generator
 
 Install with `yarn`.
